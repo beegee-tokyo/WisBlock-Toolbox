@@ -166,7 +166,17 @@ public class LoRaManager extends BatteryManager<LoRaManagerCallbacks> {
                     LoRaActivity.mmDevice = device.getName();
                     byte[] deviceData = data.getValue();
 
+                    Log.e("TAG", "Received " + deviceData.length + " bytes");
                     if (deviceData == null) {
+                        return;
+                    }
+
+                    if (deviceData.length == 0) {
+                        Log.e("TAG", "No data received");
+                        final Intent broadcast = new Intent(BROADCAST_DATA_RECVD);
+                        broadcast.putExtra(EXTRA_DEVICE, getBluetoothDevice());
+                        broadcast.putExtra(EXTRA_DATA, false);
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
                         return;
                     }
 
