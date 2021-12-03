@@ -464,7 +464,7 @@
                     android:layout_alignBottom="@id/lora_subband_f"
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@id/lora_nb_trials_num"
-                    android:max="8" />
+                    android:max="11" />
 
                 <TextView
                     android:id="@+id/lora_app_port_f"

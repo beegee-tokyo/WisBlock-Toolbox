@@ -75,6 +75,8 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static java.lang.StrictMath.abs;
 import static tk.giesecke.wisblock_toolbox.setup_lorawan.LoRaService.BROADCAST_DATA_RECVD;
+import static tk.giesecke.wisblock_toolbox.setup_lorawan.LoRaService.BROADCAST_DATA_SEND;
+import static tk.giesecke.wisblock_toolbox.setup_lorawan.LoRaService.BROADCAST_DATA_SEND_FAILED;
 import static tk.giesecke.wisblock_toolbox.uart.UARTService.SETTINGS_CLOSE;
 
 /**
@@ -365,8 +367,14 @@ public class LoRaActivity extends BleProfileServiceReadyActivity<LoRaService.Tem
         lora_region.setMinValue(0);
         lora_region.setMaxValue(12);
         lora_region.setDisplayedValues(regionValues);
-        lora_region.setOnValueChangedListener((numberPicker, i, i1) -> region = (byte) i1);
-
+//        lora_region.setOnValueChangedListener((numberPicker, i, i1) -> region = (byte) i1);
+        lora_region.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                // Save the value in the number picker
+                region = (byte) newVal;
+                updateUI();
+            }
+        });
         lora_send_repeat = findViewById(R.id.lora_send_repeat);
         lora_send_repeat.setMinValue(0);
         lora_send_repeat.setMaxValue(25);
@@ -584,6 +592,27 @@ public class LoRaActivity extends BleProfileServiceReadyActivity<LoRaService.Tem
                 pwrText.setText("C");
                 break;
         }
+        switch (region)
+        {
+            case 0:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                lora_subband.setMax(0);
+                break;
+            case 1:
+            case 8:
+                lora_subband.setMax(8);
+                break;
+            case 2:
+                lora_subband.setMax(11);
+                break;
+            default:
+                lora_subband.setMax(1);
+                break;
+        }
+
         lora_subband.setProgress(subBandChannel - 1);
         pwrText = findViewById(R.id.lora_subband_num);
         pwrText.setText(String.valueOf(subBandChannel));
@@ -769,8 +798,18 @@ public class LoRaActivity extends BleProfileServiceReadyActivity<LoRaService.Tem
 
             final String action = intent.getAction();
             if (action.equalsIgnoreCase(BROADCAST_DATA_RECVD)) {
+                // Show a Snackbar
+//                reportUpdate(getString(R.string.lora_settings_updated));
                 // Update UI with received settings
                 updateUI();
+            }
+            if (action.equalsIgnoreCase(BROADCAST_DATA_SEND)) {
+                // Show a Snackbar
+                reportUpdate(getString(R.string.lora_send_success));
+            }
+            if (action.equalsIgnoreCase(BROADCAST_DATA_SEND_FAILED)) {
+                // Show a Snackbar
+                reportSettingsMismatch(getString(R.string.lora_send_failed));
             }
         }
     };
@@ -968,6 +1007,8 @@ public class LoRaActivity extends BleProfileServiceReadyActivity<LoRaService.Tem
     private static IntentFilter makeIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_DATA_RECVD);
+        intentFilter.addAction(BROADCAST_DATA_SEND);
+        intentFilter.addAction(BROADCAST_DATA_SEND_FAILED);
         intentFilter.addAction(SETTINGS_CLOSE);
         return intentFilter;
     }
@@ -1608,4 +1649,11 @@ public class LoRaActivity extends BleProfileServiceReadyActivity<LoRaService.Tem
         successMsg.show();
     }
 
+    void reportUpdate(String message) {
+        Snackbar successMsg = Snackbar.make(findViewById(android.R.id.content), message,
+                Snackbar.LENGTH_LONG);
+        successMsg.setAction("CLOSE", view -> {
+        });
+        successMsg.show();
+    }
 }

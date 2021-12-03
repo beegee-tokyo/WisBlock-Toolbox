@@ -46,6 +46,8 @@ import tk.giesecke.wisblock_toolbox.profile.LoggableBleManager;
 
 public class LoRaService extends BleProfileService implements LoRaManagerCallbacks {
     public static final String BROADCAST_DATA_RECVD = "tk.giesecke.my_nrf52_tb.COLL.BROADCAST_MEASUREMENT";
+    public static final String BROADCAST_DATA_SEND = "tk.giesecke.my_nrf52_tb.COLL.BROADCAST_SEND";
+    public static final String BROADCAST_DATA_SEND_FAILED = "tk.giesecke.my_nrf52_tb.COLL.BROADCAST_FAIL";
     public static final String EXTRA_DATA = "tk.giesecke.my_nrf52_tb.COLL.EXTRA_DATA";
 
     private final static String ACTION_DISCONNECT = "tk.giesecke.my_nrf52_tb.setup_lora.ACTION_DISCONNECT";

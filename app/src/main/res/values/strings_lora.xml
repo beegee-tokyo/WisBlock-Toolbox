@@ -21,6 +21,9 @@
     <string name="lora_update_prefs">Get Preferences</string>
     <string name="lora_read_config_fail">Error Reading Configuration File</string>
     <string name="lora_save_config_fail">Error Saving Configuration File</string>
+    <string name="lora_send_success">Device updated</string>
+    <string name="lora_send_failed">Device update failed</string>
+    <string name="lora_settings_updated">Updated Settings</string>
 
     <!-- Text input -->
     <string name="lora_mode">LPWAN</string>

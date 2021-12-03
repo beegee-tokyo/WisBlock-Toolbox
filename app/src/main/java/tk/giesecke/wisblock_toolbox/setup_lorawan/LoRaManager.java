@@ -146,12 +146,30 @@ public class LoRaManager extends BatteryManager<LoRaManagerCallbacks> {
                 .split()
                 // Callback called when data were sent, or added to outgoing queue in case
                 // Write Without Request type was used.
-                .with((device, data) -> Log.d(TAG, data.size() + " bytes were sent"))
+                .with((device, data) -> {
+                    Log.d(TAG, data.size() + " bytes were sent");
+                    final Intent broadcast = new Intent(LoRaService.BROADCAST_DATA_SEND);
+                    broadcast.putExtra(EXTRA_DEVICE, getBluetoothDevice());
+                    broadcast.putExtra(LoRaService.EXTRA_DATA, true);
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
+                })
                 // Callback called when data were sent, or added to outgoing queue in case
                 // Write Without Request type was used. This is called after .with(...) callback.
-                .done(device -> Log.d(TAG, "Settings sent"))
+                .done(device -> {
+                    Log.d(TAG, "Settings sent");
+                    final Intent broadcast = new Intent(LoRaService.BROADCAST_DATA_SEND);
+                    broadcast.putExtra(EXTRA_DEVICE, getBluetoothDevice());
+                    broadcast.putExtra(LoRaService.EXTRA_DATA, true);
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
+                })
                 // Callback called when write has failed.
-                .fail((device, status) -> Log.e(TAG, "Failed to send settings"))
+                .fail((device, status) -> {
+                    Log.e(TAG, "Failed to send settings");
+                    final Intent broadcast = new Intent(LoRaService.BROADCAST_DATA_SEND_FAILED);
+                    broadcast.putExtra(EXTRA_DEVICE, getBluetoothDevice());
+                    broadcast.putExtra(LoRaService.EXTRA_DATA, true);
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(broadcast);
+                })
                 .enqueue();
     }
 
