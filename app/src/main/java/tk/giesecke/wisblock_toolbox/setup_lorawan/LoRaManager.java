@@ -415,7 +415,7 @@ public class LoRaManager extends BatteryManager<LoRaManagerCallbacks> {
         } else {
             LoRaActivity.loraClass = (byte) abs(deviceData[82]);
         }
-        if (abs(deviceData[83]) > 9) {
+        if (abs(deviceData[83]) > 12) {
             LoRaActivity.subBandChannel = 1;
         } else {
             LoRaActivity.subBandChannel = (byte) abs(deviceData[83]);
@@ -520,7 +520,7 @@ public class LoRaManager extends BatteryManager<LoRaManagerCallbacks> {
         } else {
             LoRaActivity.loraClass = (byte) abs(deviceData[83]);
         }
-        if (abs(deviceData[84]) > 9) {
+        if (abs(deviceData[84]) > 12) {
             LoRaActivity.subBandChannel = 1;
         } else {
             LoRaActivity.subBandChannel = (byte) abs(deviceData[84]);
