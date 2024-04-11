@@ -63,6 +63,7 @@ public class FeaturesActivity extends AppCompatActivity {
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			arrPerm.add(Manifest.permission.ACCESS_FINE_LOCATION);
 		}
+
 		// On newer Android versions it is required to get the permission of the user to
 		// access the storage of the device.
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
@@ -88,6 +89,28 @@ public class FeaturesActivity extends AppCompatActivity {
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 			arrPerm.add(Manifest.permission.CAMERA);
 		}
+		// On newer Android versions it is required to get the permission of the user to
+		// connect through Bluetooth.
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+				arrPerm.add(Manifest.permission.BLUETOOTH_CONNECT);
+			}
+		}
+//		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//				arrPerm.add(Manifest.permission.BLUETOOTH);
+//			}
+//		}
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+				arrPerm.add(Manifest.permission.BLUETOOTH_SCAN);
+			}
+		}
+//		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//				arrPerm.add(Manifest.permission.BLUETOOTH_ADMIN);
+//			}
+//		}
 		if (!arrPerm.isEmpty()) {
 			AlertDialog alertDialog1 = new AlertDialog.Builder(FeaturesActivity.this).create();
 

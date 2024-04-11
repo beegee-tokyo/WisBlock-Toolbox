@@ -29,11 +29,13 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.core.content.ContextCompat;
@@ -226,6 +228,28 @@ public class ScannerFragment extends DialogFragment {
 
 			requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_REQ_CODE);
 			return;
+		}
+		if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			// When user pressed Deny and still wants to use this functionality, show the rationale
+			if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) && permissionRationale.getVisibility() == View.GONE) {
+				permissionRationale.setVisibility(View.VISIBLE);
+				return;
+			}
+
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_REQ_CODE);
+			return;
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+				// When user pressed Deny and still wants to use this functionality, show the rationale
+				if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.BLUETOOTH_SCAN) && permissionRationale.getVisibility() == View.GONE) {
+					permissionRationale.setVisibility(View.VISIBLE);
+					return;
+				}
+
+				requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN}, REQUEST_PERMISSION_REQ_CODE);
+				return;
+			}
 		}
 
 		// Hide the rationale message, we don't need it anymore.

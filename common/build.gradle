@@ -1,17 +1,20 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    signingConfigs {
+        release {
+            storeFile file('D:\\Android\\android-studio.jks')
+            storePassword 'teresa1963'
+            keyAlias '_key0'
+            keyPassword 'teresa1963'
+        }
+    }
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        resConfigs "en"
-    }
-    lintOptions {
-        abortOnError false
+        targetSdkVersion 34
+        resConfigs 'en'
     }
     buildTypes {
         debug {
@@ -22,6 +25,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    namespace 'tk.giesecke.wisblock_toolbox.common'
+    lint {
+        abortOnError false
     }
 }
 
