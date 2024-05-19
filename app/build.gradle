@@ -22,8 +22,8 @@ android {
         applicationId "tk.giesecke.wisblock_toolbox"
         minSdkVersion 18
         targetSdkVersion 34 // 29
-        versionCode 104
-        versionName '1.0.4'
+        versionCode 105
+        versionName '1.0.5'
         resConfigs 'en'
         multiDexEnabled true
 

@@ -98,8 +98,8 @@ public class UARTService extends BleProfileService implements UARTManagerCallbac
     public void onCreate() {
         super.onCreate();
 
-        registerReceiver(disconnectActionBroadcastReceiver, new IntentFilter(ACTION_DISCONNECT));
-        registerReceiver(intentBroadcastReceiver, new IntentFilter(ACTION_SEND));
+        registerReceiver(disconnectActionBroadcastReceiver, new IntentFilter(ACTION_DISCONNECT), Context.RECEIVER_NOT_EXPORTED);
+        registerReceiver(intentBroadcastReceiver, new IntentFilter(ACTION_SEND), Context.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
