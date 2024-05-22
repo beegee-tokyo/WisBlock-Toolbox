@@ -22,6 +22,7 @@
 
 package tk.giesecke.wisblock_toolbox.uart;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,9 +31,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import no.nordicsemi.android.log.Logger;
@@ -98,8 +101,14 @@ public class UARTService extends BleProfileService implements UARTManagerCallbac
     public void onCreate() {
         super.onCreate();
 
-        registerReceiver(disconnectActionBroadcastReceiver, new IntentFilter(ACTION_DISCONNECT), Context.RECEIVER_NOT_EXPORTED);
-        registerReceiver(intentBroadcastReceiver, new IntentFilter(ACTION_SEND), Context.RECEIVER_NOT_EXPORTED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(disconnectActionBroadcastReceiver, new IntentFilter(ACTION_DISCONNECT), Context.RECEIVER_NOT_EXPORTED);
+            registerReceiver(intentBroadcastReceiver, new IntentFilter(ACTION_SEND), Context.RECEIVER_NOT_EXPORTED);
+        }
+        else {
+            registerReceiver(disconnectActionBroadcastReceiver, new IntentFilter(ACTION_DISCONNECT));
+            registerReceiver(intentBroadcastReceiver, new IntentFilter(ACTION_SEND));
+        }
     }
 
     @Override

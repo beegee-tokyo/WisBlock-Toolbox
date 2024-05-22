@@ -31,6 +31,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -116,7 +117,12 @@ public class LoRaService extends BleProfileService implements LoRaManagerCallbac
 
         final IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_DISCONNECT);
-        registerReceiver(disconnectActionBroadcastReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(disconnectActionBroadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        }
+        else {
+            registerReceiver(disconnectActionBroadcastReceiver, filter);
+        }
     }
 
     @Override
